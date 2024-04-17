@@ -1,0 +1,18 @@
+{
+  "name": "project-management-tool",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arnaskv/project-management-tool.git"
+  },
+  "author": "Arnas Kvedaravičius",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arnaskv/project-management-tool/issues"
+  },
+  "homepage": "https://github.com/arnaskv/project-management-tool#readme",
+  "workspaces": ["./packages/*"]
+}
