@@ -3,12 +3,14 @@ import {
   Entity,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 import { z } from 'zod'
 import { validates } from '@server/utils/validation'
 import { Project } from './Project'
 import { User } from './User'
+import { WorkflowStatus } from './WorkflowStatus'
 
 @Entity()
 export class Issue {
@@ -21,11 +23,8 @@ export class Issue {
   @Column()
   description: string
 
-  // @Column()
-  // issueType: string
-
-  // @Column()
-  // status: string
+  @OneToMany(() => WorkflowStatus, (workflowStatus) => workflowStatus.issues)
+  workflowStatus: WorkflowStatus
 
   @ManyToOne(() => User, (user) => user.createdIssues)
   reporter: User
@@ -37,7 +36,10 @@ export class Issue {
   project: Project
 }
 
-export type IssueBare = Omit<Issue, 'reporter' | 'assignees' | 'project'>
+export type IssueBare = Omit<
+  Issue,
+  'workflowStatus' | 'reporter' | 'assignees' | 'project'
+>
 
 export const issueSchema = validates<IssueBare>().with({
   id: z.number().int().positive(),

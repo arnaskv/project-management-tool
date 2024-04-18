@@ -14,8 +14,6 @@ export default function createApp(db: Database) {
   app.use(cors())
   app.use(express.json())
 
-  // Endpoint for health checks - pinging the server to see if it's alive.
-  // This can be used by tests, load balancers, monitoring tools, etc.
   app.use('/health', (_, res) => {
     res.status(200).send('OK')
   })
@@ -32,7 +30,6 @@ export default function createApp(db: Database) {
         res,
       }),
 
-      // all routes
       router: appRouter,
     })
   )

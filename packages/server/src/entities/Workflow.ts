@@ -2,6 +2,8 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { z } from 'zod'
 import { validates } from '@server/utils/validation'
 import { Project } from './Project'
+import { WorkflowStatus } from './WorkflowStatus'
+import { WorkflowTransition } from './WorkflowTransition'
 
 @Entity()
 export class Workflow {
@@ -13,9 +15,21 @@ export class Workflow {
 
   @OneToMany(() => Project, (project) => project.workflow)
   projects: Project[]
+
+  @OneToMany(() => WorkflowStatus, (workflowStatus) => workflowStatus.workflow)
+  statuses: WorkflowStatus[]
+
+  @OneToMany(
+    () => WorkflowTransition,
+    (workflowTransition) => workflowTransition.workflow
+  )
+  transitions: WorkflowTransition[]
 }
 
-export type WorkflowBare = Omit<Workflow, 'projects'>
+export type WorkflowBare = Omit<
+  Workflow,
+  'projects' | 'statuses' | 'transitions'
+>
 
 export const workflowSchema = validates<WorkflowBare>().with({
   id: z.number().int().positive(),
