@@ -10,7 +10,7 @@ export class Workflow {
   @PrimaryGeneratedColumn('increment')
   id: number
 
-  @Column({ unique: true })
+  @Column('text', { unique: true })
   name: string
 
   @OneToMany(() => Project, (project) => project.workflow)
@@ -36,10 +36,10 @@ export const workflowSchema = validates<WorkflowBare>().with({
   name: z
     .string()
     .trim()
-    .min(2, 'Workflow name must be at least 2 characters long')
+    .min(2, 'Workflow name must be at least 1 character long')
     .max(100),
 })
 
-export const InsertWorkflowSchema = workflowSchema.omit({ id: true })
+export const workflowInsertSchema = workflowSchema.omit({ id: true })
 
-export type InsertWorkflow = z.infer<typeof InsertWorkflowSchema>
+export type InsertWorkflow = z.infer<typeof workflowInsertSchema>

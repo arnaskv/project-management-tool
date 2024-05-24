@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
+    "dev": "tsx watch src",
     "test": "jest",
-    "typeorm": "typeorm-ts-node-commonjs"
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:revert": "npm run typeorm migration:revert -- -d src/database/cli/dataSource.ts",
+    "migration:run": "tsx ../../node_modules/typeorm/cli.js migration:run -d src/database/cli/dataSource.ts"
   },
   "keywords": [],
   "author": "",
@@ -41,6 +44,7 @@
     "http-status-codes": "^2.3.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
+    "pg": "^8.11.5",
     "superjson": "^2.2.1",
     "ts-node": "^10.9.1",
     "typeorm": "^0.3.20",

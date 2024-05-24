@@ -7,7 +7,6 @@ if (!env.NODE_ENV) env.NODE_ENV = 'development'
 
 const isTest = env.NODE_ENV === 'test'
 const isDevTest = env.NODE_ENV === 'development' || isTest
-
 const isInMemory = env.DB_TYPE === 'pg-mem'
 
 const schema = z
@@ -16,7 +15,7 @@ const schema = z
       .enum(['development', 'production', 'staging', 'test'])
       .default('development'),
     isCi: z.boolean().default(false),
-    port: z.coerce.number().default(3000),
+    port: z.coerce.number().default(8080),
 
     auth: z.object({
       tokenKey: z.string().default(() => {

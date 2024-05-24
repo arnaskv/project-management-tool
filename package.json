@@ -1,5 +1,5 @@
 {
-  "name": "project-management-tool",
+  "name": "@project-management-tool/server",
   "private": true,
   "version": "1.0.0",
   "description": "",

@@ -17,15 +17,25 @@ export class User {
   @PrimaryGeneratedColumn('increment')
   id: number
 
-  @Column({ unique: true })
+  @Column('text', { unique: true })
   @IsEmail()
   email: string
 
-  @Column()
+  @Column('text', { select: false })
   password: string
 
-  @ManyToMany(() => Project, (project) => project.users)
-  @JoinTable()
+  @ManyToMany(() => Project, { cascade: ['insert', 'update'] })
+  @JoinTable({
+    name: 'project_users',
+    joinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'project_id',
+      referencedColumnName: 'id',
+    },
+  })
   projects: Project[]
 
   @OneToMany(() => Issue, (issue) => issue.reporter)

@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -17,13 +18,24 @@ export class Project {
   @PrimaryGeneratedColumn('increment')
   id: number
 
-  @Column()
+  @Column('text')
   name: string
 
   @ManyToOne(() => Workflow, (workflow) => workflow.projects)
   workflow: Workflow
 
-  @ManyToMany(() => User, (user) => user.projects)
+  @ManyToMany(() => User, { cascade: ['insert', 'update'] })
+  @JoinTable({
+    name: 'project_users',
+    joinColumn: {
+      name: 'project_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id',
+    },
+  })
   users: User[]
 
   @OneToMany(() => Issue, (issue) => issue.project)
@@ -37,8 +49,8 @@ export const projectSchema = validates<ProjectBare>().with({
   name: z
     .string()
     .trim()
-    .min(2, 'Project name must be at least 2 characters long')
-    .max(100),
+    .min(1, 'Project name must be at least 1 character long')
+    .max(20),
 })
 
 export const projectInsertSchema = projectSchema.omit({ id: true })

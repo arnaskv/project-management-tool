@@ -9,7 +9,7 @@ export class Status {
   @PrimaryGeneratedColumn('increment')
   id: number
 
-  @Column()
+  @Column('text')
   name: string
 
   @OneToMany(() => WorkflowStatus, (workflowStatus) => workflowStatus.status)
@@ -33,11 +33,11 @@ export type StatusBare = Omit<
   'workflowStatuses' | 'fromTransitions' | 'toTransitions'
 >
 
-export const issueTypeSchema = validates<StatusBare>().with({
+export const statusSchema = validates<StatusBare>().with({
   id: z.number().int().positive(),
-  name: z.string().min(2).max(20),
+  name: z.string().min(1).max(20),
 })
 
-export const StatusInsertable = issueTypeSchema.omit({ id: true })
+export const statusInsertSchema = statusSchema.omit({ id: true })
 
-export type StatusInsert = z.infer<typeof StatusInsertable>
+export type StatusInsert = z.infer<typeof statusInsertSchema>

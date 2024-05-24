@@ -3,7 +3,6 @@ import {
   Entity,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 import { z } from 'zod'
@@ -17,13 +16,13 @@ export class Issue {
   @PrimaryGeneratedColumn('increment')
   id: number
 
-  @Column()
+  @Column('text')
   title: string
 
-  @Column()
+  @Column('text')
   description: string
 
-  @OneToMany(() => WorkflowStatus, (workflowStatus) => workflowStatus.issues)
+  @ManyToOne(() => WorkflowStatus, (workflowStatus) => workflowStatus.issues)
   workflowStatus: WorkflowStatus
 
   @ManyToOne(() => User, (user) => user.createdIssues)
@@ -43,10 +42,10 @@ export type IssueBare = Omit<
 
 export const issueSchema = validates<IssueBare>().with({
   id: z.number().int().positive(),
-  title: z.string().trim().min(2).max(20),
-  description: z.string().trim().min(2).max(255),
+  title: z.string().trim().min(1).max(20),
+  description: z.string().trim().min(1).max(255),
 })
 
-export const insertIssueSchema = issueSchema.omit({ id: true })
+export const issueInsertSchema = issueSchema.omit({ id: true })
 
-export type IssueInsert = z.infer<typeof insertIssueSchema>
+export type IssueInsert = z.infer<typeof issueInsertSchema>

@@ -14,17 +14,10 @@ export default function createApp(db: Database) {
   app.use(cors())
   app.use(express.json())
 
-  app.use('/health', (_, res) => {
-    res.status(200).send('OK')
-  })
-
   app.use(
     '/v1/trpc',
     createExpressMiddleware({
-      // Created context for each request, which we will be able to
-      // access in our procedures.
       createContext: ({ req, res }: CreateExpressContextOptions): Context => ({
-        // What we provide to our procedures under `ctx` key.
         db,
         req,
         res,
