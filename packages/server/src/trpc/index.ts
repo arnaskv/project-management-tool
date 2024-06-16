@@ -39,5 +39,6 @@ export const {
   middleware,
   router,
   procedure: publicProcedure,
+  createCallerFactory,
   mergeRouters,
 } = t

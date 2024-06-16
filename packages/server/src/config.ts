@@ -37,7 +37,6 @@ const schema = z
       username: isInMemory ? z.string().optional() : z.string(),
       password: isInMemory ? z.string().optional() : z.string(),
 
-      // By default, log and synchronize the database schema only for tests and development.
       logging: z.preprocess(coerceBoolean, z.boolean().default(isDevTest)),
       synchronize: z.preprocess(coerceBoolean, z.boolean().default(isDevTest)),
     }),
@@ -69,7 +68,6 @@ const config = schema.parse({
 
 export default config
 
-// utility functions
 function coerceBoolean(value: unknown) {
   if (typeof value === 'string') {
     return value === 'true' || value === '1'

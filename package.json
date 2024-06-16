@@ -14,5 +14,7 @@
     "url": "https://github.com/arnaskv/project-management-tool/issues"
   },
   "homepage": "https://github.com/arnaskv/project-management-tool#readme",
-  "workspaces": ["./packages/*"]
+  "workspaces": [
+    "./packages/*"
+  ]
 }

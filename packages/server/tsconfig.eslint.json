@@ -1,7 +1,7 @@
 {
   "extends": "@tsconfig/node20/tsconfig.json",
   "exclude": ["**/*.js"],
-  "include": ["**/*.ts", ".eslintrc.cjs"],
+  "include": ["**/*.ts", ".eslintrc.cjs", "jest.config.ts", "vitest.config.ts"],
 
   "compilerOptions": {
     "strict": true,

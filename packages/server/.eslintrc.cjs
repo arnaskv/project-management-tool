@@ -13,8 +13,20 @@ module.exports = {
   },
   ignorePatterns: ['**/*.js'],
   rules: {
+    'no-underscore-dangle': ['error', { allow: ['__dirname', '__filename'] }],
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',
+    '@typescript-eslint/naming-convention': [
+      'error',
+      {
+        selector: 'variable',
+        format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+        filter: {
+          regex: '^__dirname$|^__filename$',
+          match: false,
+        },
+      },
+    ],
     'import/order': [
       'error',
       {
