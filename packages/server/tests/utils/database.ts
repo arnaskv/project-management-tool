@@ -1,4 +1,3 @@
-import { join } from 'path'
 import {
   PostgreSqlContainer,
   StartedPostgreSqlContainer,
@@ -26,7 +25,6 @@ class TestDatabase {
       username: this.container.getUsername(),
       password: this.container.getPassword(),
       database: this.container.getDatabase(),
-      // migrations: [relative('../../src/database/migrations/**/*.ts')],
       namingStrategy: new SnakeNamingStrategy(),
       entities,
       synchronize: true,
@@ -48,10 +46,6 @@ class TestDatabase {
   public static getDataSource(): DataSource {
     return this.dataSource
   }
-}
-
-function relative(...paths: string[]) {
-  return join(__dirname, ...paths)
 }
 
 export { TestDatabase }
