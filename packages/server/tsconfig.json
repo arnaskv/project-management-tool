@@ -13,14 +13,11 @@
     "strict": true,
     "strictPropertyInitialization": false,
     "outDir": "dist",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
 
+    "types": ["vitest/globals"],
     "paths": {
       "@server/*": ["./src/*"],
       "@tests/*": ["./tests/*"]
     }
   }
-
-  // "exclude": ["node_modules", "./*.ts", "__test__"]
 }
