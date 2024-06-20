@@ -53,7 +53,16 @@ export type UserBare = Omit<
 export const userSchema = validates<UserBare>().with({
   id: z.number().int().positive(),
   email: z.string().trim().toLowerCase().email(),
-  password: z.string().min(8).max(64),
+  password: z
+    .string()
+    .min(8, 'Password must contain at least 8 characters')
+    .regex(/[A-Z]/, {
+      message: 'Password must contain at least one uppercase letter',
+    })
+    .regex(/[0-9]/, { message: 'Password must contain at least one number' })
+    .regex(/[^A-Za-z0-9]/, {
+      message: 'Password must contain at least one special character',
+    }),
 })
 
 export const userInsertSchema = userSchema.omit({ id: true })

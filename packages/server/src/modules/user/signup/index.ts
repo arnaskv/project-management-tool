@@ -33,7 +33,11 @@ export default publicProcedure
       if (error.message.includes('duplicate key')) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: 'User with this email already exists',
+          message: JSON.stringify({
+            fieldErrors: {
+              email: 'User with this email already exists',
+            },
+          }),
         })
       }
 

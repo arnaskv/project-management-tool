@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { trpc } from '@/utils/trpc';
 import { ProjectInsert } from '@server/shared/entities';
 import { DialogContent, DialogActions, FormLabel } from '@mui/material';
-import { FormInput, ErrorMessage } from './styles';
+import { FormInput, FormErrorMessage } from '@/styled';
 
 interface Props {
   onSubmit: () => void;
@@ -38,7 +38,7 @@ const AddProjectForm: FC<Props> = ({ onSubmit, onSuccess }) => {
       <DialogContent>
         <FormLabel>Name</FormLabel>
         <FormInput aria-label="Name" {...register('name', { required: '* Name is required.' })} />
-        <ErrorMessage>{errors.name?.message}</ErrorMessage>
+        <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
       </DialogContent>
       <DialogActions>
         <Button disableRipple type="submit" color="inherit">

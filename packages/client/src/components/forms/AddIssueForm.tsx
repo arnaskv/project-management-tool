@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { trpc } from '@/utils/trpc';
 import { IssueInsert } from '@server/shared/entities';
 import { DialogContent, DialogActions, FormLabel } from '@mui/material';
-import { FormInput, ErrorMessage } from './styles';
+import { FormInput, FormErrorMessage } from '@/styled';
 import { useParams } from 'react-router-dom';
 
 interface Props {
@@ -45,13 +45,13 @@ const AddIssueForm: FC<Props> = ({ workflowStatusId, onSubmit, onSuccess }) => {
           aria-label="Title"
           {...register('title', { required: '* Title is required.' })}
         />
-        <ErrorMessage sx={{ paddingBottom: '1rem' }}>{errors.title?.message}</ErrorMessage>
+        <FormErrorMessage sx={{ paddingBottom: '1rem' }}>{errors.title?.message}</FormErrorMessage>
         <FormLabel>Description</FormLabel>
         <FormInput
           aria-label="Description"
           {...register('description', { required: '* Description is required.' })}
         />
-        <ErrorMessage>{errors.description?.message}</ErrorMessage>
+        <FormErrorMessage>{errors.description?.message}</FormErrorMessage>
       </DialogContent>
       <DialogActions>
         <Button disableRipple type="submit" color="inherit">

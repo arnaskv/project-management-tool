@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from '@/pages/Home';
 import UserCreate from '@/pages/UserCreate';
+import UserLogin from '@/pages/UserLogin';
 import Board from '@/components/board/Board';
 
 const CustomRouterProvider = () => {
@@ -10,12 +11,16 @@ const CustomRouterProvider = () => {
       element: <Home />,
     },
     {
-      path: '/login',
+      path: '/projects/:projectId',
+      element: <Board />,
+    },
+    {
+      path: 'signup',
       element: <UserCreate />,
     },
     {
-      path: '/projects/:projectId',
-      element: <Board />,
+      path: '/login',
+      element: <UserLogin />,
     },
   ]);
 

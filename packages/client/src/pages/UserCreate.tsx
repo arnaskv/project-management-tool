@@ -1,39 +1,36 @@
 import { trpc } from '../utils/trpc';
-import { useState } from 'react';
-import { TextField, Button, Typography } from '@mui/material';
-import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { Button, FormLabel } from '@mui/material';
 import type { UserSchema } from '@server/shared/entities';
-
-const Box = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  width: '100vw',
-  height: '100vh',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '1rem',
-});
+import { HeaderText, UserMainBox, UserFormBox, FormErrorMessage, FormInput } from '@/styled';
 
 export default function UserCreate() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm({ defaultValues: { email: '', password: '', passwordRepeat: '' } });
 
   const mutation = trpc.user.signup.useMutation();
 
-  const handleUserCreation = async () => {
-    const newUser: UserSchema = { email, password };
-
+  const handleUserCreate = async (newUser: UserSchema) => {
     try {
-      await mutation.mutate(newUser, {
+      mutation.mutate(newUser, {
         onSuccess: () => {
-          setEmail('');
-          setPassword('');
+          navigate('/login');
         },
         onError: (error) => {
-          const { message } = error;
-          const messageObj = JSON.parse(message);
-          const errorMessages = messageObj.map((error: any) => error.message);
-          console.log(errorMessages);
+          const fieldErrors = error.data?.zodError?.fieldErrors;
+          if (fieldErrors) {
+            for (const [key, value] of Object.entries(fieldErrors)) {
+              const message = value?.map((element) => `* ${element}.`).join('\n');
+              setError(key as keyof UserSchema, { type: 'manual', message });
+            }
+          }
         },
       });
     } catch (error) {
@@ -42,32 +39,51 @@ export default function UserCreate() {
   };
 
   return (
-    <Box>
-      <Typography variant="h3" style={{ color: 'black' }}>
-        Sign up
-      </Typography>
-      <TextField
-        id="email"
-        label="Email address"
-        variant="outlined"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <TextField
-        id="password"
-        label="Password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <Button
-        size="large"
-        variant="outlined"
-        onClick={handleUserCreation}
-        disabled={Boolean(!email || !password)}
+    <UserMainBox>
+      <HeaderText>Sign up</HeaderText>
+      <UserFormBox
+        color="inherit"
+        onSubmit={handleSubmit((data) => {
+          data.password === data.passwordRepeat
+            ? handleUserCreate({ email: data.email, password: data.password })
+            : setError('passwordRepeat', {
+                type: 'manual',
+                message: '* Passwords do not match.',
+              });
+        })}
       >
-        Create
-      </Button>
-    </Box>
+        <div>
+          <FormLabel>Email</FormLabel>
+          <FormInput
+            aria-label="Email"
+            {...register('email', { required: '* Email is required.' })}
+          />
+          <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+        </div>
+        <div>
+          <FormLabel>Password</FormLabel>
+          <FormInput
+            aria-label="Password"
+            type="password"
+            {...register('password', { required: '* Password is required.' })}
+          />
+          <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+        </div>
+        <div>
+          <FormLabel>Repeat password</FormLabel>
+          <FormInput
+            aria-label="Repeat password"
+            type="password"
+            {...register('passwordRepeat', {
+              required: '* Confirm password.',
+            })}
+          />
+          <FormErrorMessage>{errors.passwordRepeat?.message}</FormErrorMessage>
+        </div>
+        <Button variant="outlined" type="submit" color="inherit">
+          Submit
+        </Button>
+      </UserFormBox>
+    </UserMainBox>
   );
 }

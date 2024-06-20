@@ -4,7 +4,6 @@ import type { AuthUser } from '@server/entities/User'
 import type { Database } from '@server/database'
 import SuperJSON from 'superjson'
 import { ZodError } from 'zod'
-import { fromZodError } from 'zod-validation-error'
 
 export type Context = {
   db: Database
@@ -19,19 +18,16 @@ const t = initTRPC.context<Context>().create({
   transformer: SuperJSON,
   errorFormatter(opts) {
     const { shape, error } = opts
-
-    if (error.cause instanceof ZodError) {
-      const validationError = fromZodError(error.cause)
-
-      return {
-        ...shape,
-        data: {
-          message: validationError.message,
-        },
-      }
+    return {
+      ...shape,
+      data: {
+        ...shape.data,
+        zodError:
+          error.code === 'BAD_REQUEST' && error.cause instanceof ZodError
+            ? error.cause.flatten()
+            : null,
+      },
     }
-
-    return shape
   },
 })
 
