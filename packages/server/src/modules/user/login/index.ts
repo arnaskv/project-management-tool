@@ -1,19 +1,19 @@
 import bcrypt from 'bcrypt'
 import config from '@server/config'
+import { z } from 'zod'
 import jsonwebtoken from 'jsonwebtoken'
 import { publicProcedure } from '@server/trpc'
 import { User } from '@server/entities'
 import { TRPCError } from '@trpc/server'
-import { userSchema } from '@server/entities/User'
 import { prepareTokenPayload } from '../tokenPayload'
 
 const { expiresIn, tokenKey } = config.auth
 
 export default publicProcedure
   .input(
-    userSchema.pick({
-      email: true,
-      password: true,
+    z.object({
+      email: z.string().email(),
+      password: z.string(),
     })
   )
   .mutation(async ({ input: { email, password }, ctx: { db } }) => {

@@ -4,9 +4,16 @@ import { useForm } from 'react-hook-form';
 import { Button, FormLabel } from '@mui/material';
 import type { UserSchema } from '@server/shared/entities';
 import { FormErrorMessage, FormInput, HeaderText, UserFormBox, UserMainBox } from '@/styled';
+import { useAppDispatch } from '@/features/hooks';
+import { jwtDecode } from 'jwt-decode';
+import { setCredentials } from '@/features/auth';
+import { useState } from 'react';
 
 export default function UserLogin() {
+  const loginMutation = trpc.user.login.useMutation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [err, setErr] = useState('');
 
   const {
     register,
@@ -14,13 +21,22 @@ export default function UserLogin() {
     formState: { errors },
   } = useForm({ defaultValues: { email: '', password: '' } });
 
-  const mutation = trpc.user.login.useMutation();
-
   const handleUserLogin = async (user: UserSchema) => {
     try {
-      mutation.mutate(user, {
-        onSuccess: () => {
+      loginMutation.mutate(user, {
+        onSuccess: (data) => {
+          const { accessToken } = data;
+          const { user }: { user: { id: number }; iat: number; exp: number } =
+            jwtDecode(accessToken);
+
+          localStorage.setItem('accessToken', accessToken);
+
+          dispatch(setCredentials({ user, accessToken }));
+
           navigate('/');
+        },
+        onError: (error) => {
+          setErr(`* ${error.message}`);
         },
       });
     } catch (error) {
@@ -57,6 +73,7 @@ export default function UserLogin() {
         <Button variant="outlined" type="submit" color="inherit">
           Submit
         </Button>
+        <FormErrorMessage>{err}</FormErrorMessage>
       </UserFormBox>
     </UserMainBox>
   );

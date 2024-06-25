@@ -15,7 +15,7 @@ const CustomRouterProvider = () => {
       element: <Board />,
     },
     {
-      path: 'signup',
+      path: '/sign-up',
       element: <UserCreate />,
     },
     {
