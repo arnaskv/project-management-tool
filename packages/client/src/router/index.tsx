@@ -3,16 +3,22 @@ import Home from '@/pages/Home';
 import UserCreate from '@/pages/UserCreate';
 import UserLogin from '@/pages/UserLogin';
 import Board from '@/components/board/Board';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 const CustomRouterProvider = () => {
   const router = createBrowserRouter([
     {
-      path: '/',
-      element: <Home />,
-    },
-    {
-      path: '/projects/:projectId',
-      element: <Board />,
+      element: <ProtectedRoute />,
+      children: [
+        {
+          path: '/',
+          element: <Home />,
+        },
+        {
+          path: '/projects/:projectId',
+          element: <Board />,
+        },
+      ],
     },
     {
       path: '/sign-up',
