@@ -23,7 +23,7 @@ const Box = styled('div')(({ theme }) => ({
 }));
 
 export default function SidePanel() {
-  const { data: projects, refetch } = trpc.project.getAllByUser.useQuery();
+  const { data: projects, refetch } = trpc.project.find.useQuery();
 
   return (
     <Box>

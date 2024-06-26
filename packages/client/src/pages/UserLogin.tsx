@@ -3,7 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Button, FormLabel } from '@mui/material';
 import type { UserSchema } from '@server/shared/entities';
-import { FormErrorMessage, FormInput, HeaderText, UserFormBox, UserMainBox } from '@/styled';
+import {
+  FormErrorMessage,
+  FormInput,
+  HeaderText,
+  UserFormBox,
+  UserMainBox,
+  InfoText,
+} from '@/styled';
 import { useAppDispatch } from '@/features/hooks';
 import { jwtDecode } from 'jwt-decode';
 import { setCredentials } from '@/features/auth';
@@ -75,6 +82,7 @@ export default function UserLogin() {
         </Button>
         <FormErrorMessage>{err}</FormErrorMessage>
       </UserFormBox>
+      <InfoText onClick={() => navigate('/sign-up')}>Create an account</InfoText>
     </UserMainBox>
   );
 }

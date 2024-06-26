@@ -46,3 +46,8 @@ export const FormErrorMessage = styled('div')(({ theme }) => ({
   color: theme.palette.error.main,
   whiteSpace: 'pre-line',
 }));
+
+export const InfoText = styled('p')(({ theme }) => ({
+  color: theme.palette.info.main,
+  cursor: 'pointer',
+}));

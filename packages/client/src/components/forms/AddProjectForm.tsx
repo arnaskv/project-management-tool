@@ -24,7 +24,6 @@ const AddProjectForm: FC<Props> = ({ onSubmit, onSuccess }) => {
 
   const handleProjectCreate = (data: ProjectInsert) => {
     projectMutation.mutate(data);
-    console.log(data);
   };
 
   return (
