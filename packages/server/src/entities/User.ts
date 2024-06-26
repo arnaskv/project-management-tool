@@ -38,7 +38,7 @@ export class User {
   })
   projects: Project[]
 
-  @OneToMany(() => Issue, (issue) => issue.reporter)
+  @OneToMany(() => Issue, (issue) => issue.creator)
   createdIssues: Issue[]
 
   @ManyToMany(() => Issue, (issue) => issue.assignees)

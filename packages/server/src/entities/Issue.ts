@@ -26,7 +26,7 @@ export class Issue {
   workflowStatus: WorkflowStatus
 
   @ManyToOne(() => User, (user) => user.createdIssues)
-  reporter: User
+  creator: User
 
   @ManyToMany(() => User, (user) => user.assignedIssues)
   assignees: User[]
@@ -37,7 +37,7 @@ export class Issue {
 
 export type IssueBare = Omit<
   Issue,
-  'workflowStatus' | 'reporter' | 'assignees' | 'project'
+  'workflowStatus' | 'creator' | 'assignees' | 'project'
 >
 
 export const issueSchema = validates<IssueBare>().with({

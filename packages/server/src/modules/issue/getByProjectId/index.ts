@@ -1,9 +1,9 @@
 import { Issue } from '@server/entities'
 import { IssueBare } from '@server/entities/Issue'
 import { projectSchema } from '@server/entities/Project'
-import { publicProcedure } from '@server/trpc'
+import { authenticatedProcedure } from '@server/trpc/authenticatedProcedure'
 
-export default publicProcedure
+export default authenticatedProcedure
   .input(projectSchema.shape.id)
   .query(async ({ input: projectId, ctx: { db } }) => {
     const issues = (await db.getRepository(Issue).find({

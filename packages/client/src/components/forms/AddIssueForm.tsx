@@ -28,7 +28,6 @@ const AddIssueForm: FC<Props> = ({ workflowStatusId, onSubmit, onSuccess }) => {
 
   const handleIssueCreate = (data: IssueInsert) => {
     issueMutation.mutate({ issueData: data, projectId, workflowStatusId });
-    console.log(data);
   };
 
   return (

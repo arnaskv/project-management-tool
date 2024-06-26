@@ -1,10 +1,10 @@
 import { Issue } from '@server/entities'
 import { projectSchema } from '@server/entities/Project'
 import { workflowStatusSchema } from '@server/entities/WorkflowStatus'
-import { publicProcedure } from '@server/trpc'
+import { authenticatedProcedure } from '@server/trpc/authenticatedProcedure'
 import { z } from 'zod'
 
-export default publicProcedure
+export default authenticatedProcedure
   .input(
     z.object({
       projectId: projectSchema.shape.id,
