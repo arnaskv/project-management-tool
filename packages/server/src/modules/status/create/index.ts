@@ -5,11 +5,7 @@ export default publicProcedure
   .input(statusInsertSchema)
 
   .mutation(async ({ input: statusData, ctx: { db } }) => {
-    const status = {
-      ...statusData,
-    }
-
-    const statusCreated = db.getRepository(Status).save(status)
+    const statusCreated = db.getRepository(Status).save(statusData)
 
     return statusCreated
   })

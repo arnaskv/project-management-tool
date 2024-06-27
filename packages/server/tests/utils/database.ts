@@ -5,6 +5,7 @@ import {
 import { DataSource } from 'typeorm'
 import * as entities from '@server/entities'
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
+import { relative } from '@server/utils/utilities'
 
 class TestDatabase {
   private static container: StartedPostgreSqlContainer
@@ -27,11 +28,14 @@ class TestDatabase {
       database: this.container.getDatabase(),
       namingStrategy: new SnakeNamingStrategy(),
       entities,
+      migrations: [relative('../src/database/migrations/**/*.ts')],
       synchronize: true,
       logging: false,
     })
 
     await this.dataSource.initialize()
+
+    await this.dataSource.runMigrations()
   }
 
   public static async stop(): Promise<void> {

@@ -1,13 +1,8 @@
-import { TestDatabase } from '@tests/utils/database'
-import { appRouter } from '@server/modules'
-import { createCallerFactory } from '@server/trpc'
-import { requestContext } from '@tests/utils/context'
+import { getCaller } from '@tests/utils/testUtils'
 
 describe('Get status', () => {
   it('should get a status by id', async () => {
-    const db = TestDatabase.getDataSource()
-    const createCaller = createCallerFactory(appRouter)
-    const caller = createCaller(requestContext({ db }))
+    const caller = getCaller()
 
     const newTestStatus = await caller.workflow.create({ name: 'Test test' })
 

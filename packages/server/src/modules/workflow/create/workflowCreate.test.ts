@@ -1,14 +1,10 @@
-import { TestDatabase } from '@tests/utils/database'
 import { inferProcedureInput } from '@trpc/server'
-import { AppRouter, appRouter } from '@server/modules'
-import { createCallerFactory } from '@server/trpc'
-import { requestContext } from '@tests/utils/context'
+import { AppRouter } from '@server/modules'
+import { getCaller } from '@tests/utils/testUtils'
 
 describe('Workflow Creation', () => {
   it('should create a persisted workflow', async () => {
-    const db = TestDatabase.getDataSource()
-    const createCaller = createCallerFactory(appRouter)
-    const caller = createCaller(requestContext({ db }))
+    const caller = getCaller()
 
     const input: inferProcedureInput<AppRouter['workflow']['create']> = {
       name: 'Test workflow',
