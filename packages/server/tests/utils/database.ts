@@ -35,7 +35,9 @@ class TestDatabase {
 
     await this.dataSource.initialize()
 
-    await this.dataSource.runMigrations()
+    await this.dataSource.runMigrations({
+      transaction: 'all',
+    })
   }
 
   public static async stop(): Promise<void> {
